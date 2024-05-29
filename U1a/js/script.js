@@ -31,8 +31,6 @@ function init() {
     rollElem = document.querySelector("#rollCounter");
     optionsDialog = document.querySelector("#options");
     maxNrOfRolls = document.querySelector("#nrOfReroll").value;
-    playerName = document.querySelector("#player").value;
-
 } // Slut init
 window.addEventListener("load", init);
 // -------------------------------------------------

@@ -67,8 +67,10 @@ function init() {
     stopBtn.disabled = true;
 
     /* === Tillägg i uppgiften === */
-    
+    pigCounterElem = document.querySelector("#pigCounter");
+    hitCounter = document.querySelector("#hitCounter");
 
+    pigElem = document.querySelector("#pig");
 } // Slut init
 window.addEventListener("load", init);
 // --------------------------------------------------
@@ -83,6 +85,13 @@ function startGame() {
     carMenu.disabled = true;
     startBtn.disabled = true;
     stopBtn.disabled = false;
+
+    pigCounter = 0;
+    pigCounterElem.innerHTML = pigCounter;
+
+    hitCounter = 0;
+    hitCounterElem.innerHTML = hitCounter;
+
     document.activeElement.blur(); // Knapparna sätts ur focus, så att webbsidan kommer i fokus igen
     // Detta behövs för att man ska kunna känna av händelsen keydown i Firefox efter att man klickat på en knapp.
 
@@ -95,20 +104,23 @@ function startGame() {
     moveCar(); // Starta bilen
 
     /* === Tillägg i uppgiften === */
-    
-    
+    newPig(); 
+
 } // Slut startGame
 // --------------------------------------------------
 // Stoppa spelet
 function stopGame() {
     if (carTimer != null) clearTimeout(carTimer);
+    if (pigTimer != null) clearTimeout(pigTimer);
     carMenu.disabled = false;
     startBtn.disabled = false;
     stopBtn.disabled = true;
 
     /* === Tillägg i uppgiften === */
-    
-    
+    pigTimer = null;
+    pigElem.style = 0;
+
+
 } // Slut stopGame
 // --------------------------------------------------
 // Kontrollera tangenter och styr bilen. Anropas vid keydown.
@@ -156,10 +168,53 @@ function moveCar() {
     carTimer = setTimeout(moveCar, carInterval);
 
     /* === Tillägg i uppgiften === */
-    
-    
+    chechHit(); 
 } // Slut moveCar
 // --------------------------------------------------
 
 /* ===== Tillägg av nya funktioner i uppgiften ===== */
 
+function newPig() {
+    if (pigCounter < 10) {
+        let board = boardElem.getBoundingClientRect();
+        let piggy = pigElem.getBoundingClientRect();
+        let leftPos = Math.floor(Math.random() * (board.width * piggy.width - 40)) + 20;
+        let topPos = Math.floor(Math.random() * (board.height * piggy.heigth - 40)) + 20;
+
+        pigElem.style.left = leftPos + "px";
+        pigElem.style.top = topPos + "px";
+        pigElem.src = "img/pig.png";
+        pigElem.style.visibility = "visible";
+
+        pigCounter++;
+        pigCounterElem.innerHTML = pigCounter;
+
+        catchedPig = false;
+        pigTimer = setTimeout(newPig, pigDuration);
+
+    } else {
+        stopGame();
+    }
+
+}
+
+function chechHit() {
+    if (catchedPig) return;
+    
+    let carCollide = carElem.getBoundingClientRect();
+    let pigCollide = pigElem.getBoundingClientRect();
+    
+    if (!(carRect.right < pigRect.left || carRect.left > pigRect.right || carRect.bottom < pigRect.top || carRect.top > pigRect.bottom)) {
+        pigElem.src = "img/smack.png";
+        hitCounter++;
+        hitCounterElem.textContent = hitCounter;
+        punchSound.play();
+        if (hitCounter === 5) {
+            laughSound.play();
+        }
+        catchedPig = true;
+        if (pigTimer != null) clearTimeout(pigTimer);
+        pigTimer = setTimeout(newPig, pigDuration);
+    }
+   
+}
