@@ -23,14 +23,14 @@ function init() {
     // Händelselyssnare för drag-and-drop
     newTiles.querySelectorAll(".tile").forEach(tile => {
         tile.setAttribute("draggable", true);
-        tile.addEventListener("dragstart", handleDragStart);
-        tile.addEventListener("dragend", handleDragEnd);
+        tile.addEventListener("dragstart", dragStartFunc);
+        tile.addEventListener("dragend", dragEndFunc);
     });
 
     board.querySelectorAll(".tile").forEach(tile => {
-        tile.addEventListener("dragover", handleDragOver);
-        tile.addEventListener("dragleave", handleDragLeave);
-        tile.addEventListener("drop", handleDrop);
+        tile.addEventListener("dragover", dragOverFunc);
+        tile.addEventListener("dragleave", dragLeaveFunc);
+        tile.addEventListener("drop", dropFunc);
     });
 
     // Funktionen för en ny spelomgång
@@ -71,8 +71,8 @@ function init() {
         newTiles.querySelectorAll(".tile").forEach((tile, i) => {
             tile.innerHTML = currentTiles[i];
             tile.setAttribute("draggable", true); // Make tile draggable
-            tile.addEventListener("dragstart", handleDragStart);
-            tile.addEventListener("dragend", handleDragEnd);
+            tile.addEventListener("dragstart", dragStartFunc);
+            tile.addEventListener("dragend", dragEndFunc);
         });
 
         newTilesBtn.disabled = true;
@@ -88,13 +88,13 @@ function init() {
     }
 
     // Implementerar dragbara element
-    function handleDragStart(e) {
+    function dragStartFunc(e) {
         e.dataTransfer.setData("text", e.target.innerHTML);
         e.target.classList.add("dragging");
     }
 
     // Bakgrundsfärg på draget element på tomma rutor på brädet
-    function handleDragOver(e) {
+    function dragOverFunc(e) {
         e.preventDefault();
         if (e.target.classList.contains("tile") && !e.target.innerHTML) {
             e.target.classList.add("hiliteDropZone");
@@ -102,14 +102,14 @@ function init() {
     }
 
     // Tar bort markeringen efter draget element
-    function handleDragLeave(e) {
+    function dragLeaveFunc(e) {
 
         if (e.target.classList.contains("tile")) {
             e.target.classList.remove("hiliteDropZone");
         }
     }
 
-    function handleDrop(e) {
+    function dropFunc(e) {
         e.preventDefault();
         const draggedNumber = e.dataTransfer.getData("text");
 
@@ -136,7 +136,7 @@ function init() {
     }
 
     // Raderar klassen dragging när elementet släppts
-    function handleDragEnd(e) {
+    function dragEndFunc(e) {
         e.target.classList.remove("dragging");
     }
 
