@@ -1,18 +1,26 @@
 /* Uppgift U3 */
 
-function init() {
-    const newGameBtn = document.getElementById("newGameBtn");
-    const newTilesBtn = document.getElementById("newTilesBtn");
-    const board = document.getElementById("board");
-    const newTiles = document.getElementById("newTiles");
-    const message = document.getElementById("message");
-    const totPointsElem = document.getElementById("totPoints");
-    const countGamesElem = document.getElementById("countGames");
+let newGameBtn;
+let newTilesBtn;
+let board;
+let newTiles;
+let message;
+let totPointsElem;
+let countGamesElem;
 
-    let totalPoints = 0;
-    let countGames = 0;
-    let currentTiles = [];
-    let usedNumbers = new Set();
+let totalPoints = 0;
+let countGames = 0;
+let currentTiles = [];
+let usedNumbers = new Set();
+
+function init() {
+    newGameBtn = document.getElementById("newGameBtn");
+    const newTilesBtn = document.getElementById("newTilesBtn");
+    board = document.getElementById("board");
+    newTiles = document.getElementById("newTiles");
+    message = document.getElementById("message");
+    totPointsElem = document.getElementById("totPoints");
+    countGamesElem = document.getElementById("countGames");
 
     loadGameData();
     newTilesBtn.disabled = true;
