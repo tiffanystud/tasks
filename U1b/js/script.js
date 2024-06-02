@@ -66,9 +66,9 @@ function selectRandomWord() {
 // Kontrollera om bokstaven finns i ordet och skriv i så fall ut den.
 // Om bokstaven ej finns, uppdateras bilden med galgen och gubben
 // Om alla bokstäver är gissade eller om den sista bilden visades, avslutas spelet
-function guessLetter(event) {
-    const selectedLetter = event.target.value;
-    event.target.disabled = true;
+function guessLetter(e) {
+    const selectedLetter = e.target.value;
+    e.target.disabled = true;
 
     const boxElems = document.querySelectorAll("#letterBoxes span");
 
@@ -83,7 +83,7 @@ function guessLetter(event) {
 
     if (!correctGuess) {
         hangmanNr++;
-        hangmanImg.src = `img/h${hangmanNr}.png`;
+        hangmanImg.src = "img/h" + hangmanNr + ".png";
         if (hangmanNr === 6) {
             endGame(true);
             return;

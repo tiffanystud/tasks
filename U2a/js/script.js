@@ -34,13 +34,13 @@ function init() {
     calculateCost();
 
     // Händelsehanterare för textfält som ska kontrolleras
-    formElem.zipcode.addEventListener('blur', (e) => checkField(e, formElem.zipcode));
-    formElem.telephone.addEventListener('blur', (e) => checkField(e, formElem.telephone));
+    formElem.zipcode.addEventListener("blur", (e) => checkField(e, formElem.zipcode));
+    formElem.telephone.addEventListener("blur", (e) => checkField(e, formElem.telephone));
 
     // Händelsehanterare för kampanjkod
-    formElem.campaigncode.addEventListener('focus', checkCampaign);
-    formElem.campaigncode.addEventListener('keyup', checkCampaign);
-    formElem.campaigncode.addEventListener('blur', endCheckCampaign);
+    formElem.campaigncode.addEventListener("focus", checkCampaign);
+    formElem.campaigncode.addEventListener("keyup", checkCampaign);
+    formElem.campaigncode.addEventListener("blur", endCheckCampaign);
 }// Slut init
 window.addEventListener("load", init);
 // --------------------------------------------------
@@ -67,7 +67,7 @@ function calculateCost() {
     }
 
     totalCost *= parseInt(formElem.nrOfNights.value);
-    document.getElementById("totalCost").textContent = totalCost + " kr";
+    document.getElementById("totalCost").innerText = totalCost + " kr";
 }// Slut calculateCost
 // --------------------------------------------------
 // Kontrollera om familjerum är valt och ändra tillgänglighet till andra val
@@ -98,9 +98,9 @@ function checkField(e, field) {
 
     const errorMsg = field.nextElementSibling;
     if (regex.test(field.value.trim())) {
-        errorMsg.textContent = "";
+        errorMsg.innerText = "";
     } else {
-        errorMsg.textContent = "Felaktigt format";
+        errorMsg.innerText = "Felaktigt format";
     }
 }// Slut checkField
 // --------------------------------------------------
