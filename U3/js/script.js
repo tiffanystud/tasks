@@ -1,3 +1,5 @@
+/* Uppgift U3 */
+
 function init() {
     const newGameBtn = document.getElementById("newGameBtn");
     const newTilesBtn = document.getElementById("newTilesBtn");
@@ -22,8 +24,7 @@ function init() {
         saveGameData();
         countGamesElem.innerHTML = countGames;
     });
-
-
+    // --------------------------------------------------
     // Läs in ev. sparad data
     function loadGameData() {
         const savedData = localStorage.getItem("gameData");
@@ -42,7 +43,7 @@ function init() {
             }
         }
     }
-
+    // --------------------------------------------------
     // Rensa brädet, meddelanden och markörer
     function newGame() {
 
@@ -56,7 +57,7 @@ function init() {
         newGameBtn.disabled = true;
         newTilesBtn.disabled = false;
     }
-
+    // --------------------------------------------------
     //Funktion för skapande av 4 nya brickor och drag and drop
     function generateNewTiles() {
         newTiles.querySelectorAll(".tile").forEach(tile => tile.innerHTML = "");
@@ -95,7 +96,7 @@ function init() {
         // Inaktiv knapp så länge det finns brickor att placera
         newTilesBtn.disabled = true;
     }
-
+    // --------------------------------------------------
     // Funktion som konrollerar drag and drop
     function handleDragStart(e) {
         if (e.target.innerHTML.trim() === "") {
@@ -107,7 +108,7 @@ function init() {
         e.dataTransfer.setData("text", e.target.innerHTML);
         e.target.classList.add("dragging");
     }
-
+    // --------------------------------------------------
     // Funktioner som implementerar bakgrundsfärg under dragOver 
     function handleDragOver(e) {
         e.preventDefault();
@@ -115,14 +116,14 @@ function init() {
             e.target.classList.add("hiliteDropZone");
         }
     }
-
+    // --------------------------------------------------
     // Funktion som tar bort bakgrundsfärgen
     function handleDragLeave(e) {
         if (e.target.classList.contains("tile")) {
             e.target.classList.remove("hiliteDropZone");
         }
     }
-
+    // --------------------------------------------------
     // Funktion som överför data vid släppt brickca på tom ruta
     function handleDrop(e) {
         e.preventDefault();
@@ -144,12 +145,12 @@ function init() {
             checkGameCompletion();
         }
     }
-
+    // --------------------------------------------------
     // Ta bort dragging-class
     function handleDragEnd(e) {
         e.target.classList.remove("dragging");
     }
-
+    // --------------------------------------------------
     // Funktion som konrollerar om brädet är fullt
     function checkGameCompletion() {
         if ([...board.querySelectorAll(".tile")].every(tile => tile.innerHTML)) {
@@ -162,7 +163,7 @@ function init() {
             saveGameData();
         }
     }
-
+    // --------------------------------------------------
     // Funktion för kontroll av stigande serier
     function checkSeries() {
         let points = 0;
@@ -195,7 +196,7 @@ function init() {
         totalPoints += points;
         totPointsElem.innerHTML = totalPoints;
     }
-
+    // --------------------------------------------------
     // Kontroll av stigande serie
     function isIncreasing(tiles, reverse = false) {
         if (reverse) tiles = tiles.reverse();
@@ -206,8 +207,7 @@ function init() {
         }
         return true;
     }
-
-
+    // --------------------------------------------------
     // Spara ner till local storage
     function saveGameData() {
         const data = {
@@ -216,8 +216,7 @@ function init() {
         };
         localStorage.setItem("gameData", JSON.stringify(data));
     }
+    // --------------------------------------------------
 }
-
-
-
+// --------------------------------------------------
 window.addEventListener("load", init);
