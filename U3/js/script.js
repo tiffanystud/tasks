@@ -3,7 +3,7 @@ function init() {
     const newTilesBtn = document.getElementById('newTilesBtn');
     const board = document.getElementById('board');
     const newTiles = document.getElementById('newTiles');
-    const message = document.getElementById('message');
+    const message = document.getElementById('message' );
     const totPointsElem = document.getElementById('totPoints');
     const countGamesElem = document.getElementById('countGames');
 
