@@ -68,7 +68,7 @@ function init() {
 
     /* === Tillägg i uppgiften === */
     pigCounterElem = document.querySelector("#pigCounter");
-    hitCounter = document.querySelector("#hitCounter");
+    hitCounterElem = document.querySelector("#hitCounter");
 
     pigElem = document.querySelector("#pig");
 } // Slut init
@@ -118,7 +118,7 @@ function stopGame() {
 
     /* === Tillägg i uppgiften === */
     pigTimer = null;
-    pigElem.style = 0;
+    pigElem.style = "0";
 
 
 } // Slut stopGame
@@ -168,7 +168,7 @@ function moveCar() {
     carTimer = setTimeout(moveCar, carInterval);
 
     /* === Tillägg i uppgiften === */
-    chechHit(); 
+    checkHit(); 
 } // Slut moveCar
 // --------------------------------------------------
 
@@ -178,8 +178,9 @@ function newPig() {
     if (pigCounter < 10) {
         let board = boardElem.getBoundingClientRect();
         let piggy = pigElem.getBoundingClientRect();
-        let leftPos = Math.floor(Math.random() * (board.width * piggy.width - 40)) + 20;
-        let topPos = Math.floor(Math.random() * (board.height * piggy.heigth - 40)) + 20;
+
+        let leftPos = Math.floor(Math.random() * (board.width - piggy.width - 40)) + 20;
+        let topPos = Math.floor(Math.random() * (board.height - piggy.height - 40)) + 20;
 
         pigElem.style.left = leftPos + "px";
         pigElem.style.top = topPos + "px";
@@ -198,13 +199,13 @@ function newPig() {
 
 }
 
-function chechHit() {
+function checkHit() {
     if (catchedPig) return;
     
     let carCollide = carElem.getBoundingClientRect();
     let pigCollide = pigElem.getBoundingClientRect();
     
-    if (!(carRect.right < pigRect.left || carRect.left > pigRect.right || carRect.bottom < pigRect.top || carRect.top > pigRect.bottom)) {
+    if (!(carCollide.right < pigCollide.left || carCollide.left > pigCollide.right || carCollide.bottom < pigCollide.top || carCollide.top > pigCollide.bottom)) {
         pigElem.src = "img/smack.png";
         hitCounter++;
         hitCounterElem.textContent = hitCounter;
@@ -213,6 +214,7 @@ function chechHit() {
             laughSound.play();
         }
         catchedPig = true;
+
         if (pigTimer != null) clearTimeout(pigTimer);
         pigTimer = setTimeout(newPig, pigDuration);
     }
