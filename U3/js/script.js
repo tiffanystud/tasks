@@ -86,7 +86,7 @@ function init() {
         // Gör de nya brickorna draggable
         newTiles.querySelectorAll('.tile').forEach((tile, index) => {
             tile.innerHTML = currentTiles[index];
-            tile.setAttribute('draggable', true); // Make tile draggable
+            tile.setAttribute('draggable', true);
             tile.addEventListener('dragstart', handleDragStart);
             tile.addEventListener('dragend', handleDragEnd);
         });
@@ -141,8 +141,8 @@ function init() {
         }
     }
 
+    // Ta bort dragging-class
     function handleDragEnd(e) {
-        // Remove dragging class from the dragged element
         e.target.classList.remove('dragging');
     }
 
