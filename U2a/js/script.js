@@ -6,7 +6,7 @@ const facilityPrice = [40, 80, 100];     // Pris för tilläggen
 let formElem;                            // Elementet med hela formuläret (form-elementet)
 
 // --------------------------------------------------
-// Initiera globala variabler och händelsehanterare. Lägg till info om pris.
+// Initiera globala variabler och händelsehanterare. Lägg till info om pris 
 function init() {
     formElem = document.querySelector("#booking");
 

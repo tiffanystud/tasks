@@ -110,7 +110,7 @@ function endGame(manHanged) {
     if (manHanged) {
         msgElem.textContent = "Gubben blev hängd! Ordet var: " + randomWord;
     } else {
-        msgElem.textContent = "Grattis! Du gissade på " + randomWord + " som var rätt ord!";
+        msgElem.textContent = "Grattis! Du gissade rätt ord!";
     }
 
     startBtn.disabled = false;
