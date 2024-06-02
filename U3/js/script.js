@@ -176,7 +176,7 @@ function init() {
     function isIncreasing(tiles, reverse = false) {
         if (reverse) tiles = tiles.reverse();
         for (let i = 0; i < tiles.length - 1; i++) {
-            const num1 = parseInt(tiles[i].v, 10);
+            const num1 = parseInt(tiles[i], 10);
             const num2 = parseInt(tiles[i + 1].innerHTML, 10);
             if (num1 >= num2) return false;
         }
