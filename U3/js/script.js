@@ -1,11 +1,11 @@
 function init() {
-    const newGameBtn = document.getElementById('newGameBtn');
-    const newTilesBtn = document.getElementById('newTilesBtn');
-    const board = document.getElementById('board');
-    const newTiles = document.getElementById('newTiles');
-    const message = document.getElementById('message' );
-    const totPointsElem = document.getElementById('totPoints');
-    const countGamesElem = document.getElementById('countGames');
+    const newGameBtn = document.getElementById("newGameBtn");
+    const newTilesBtn = document.getElementById("newTilesBtn");
+    const board = document.getElementById("board");
+    const newTiles = document.getElementById("newTiles");
+    const message = document.getElementById("message");
+    const totPointsElem = document.getElementById("totPoints");
+    const countGamesElem = document.getElementById("countGames");
 
     let totalPoints = 0;
     let countGames = 0;
@@ -15,30 +15,18 @@ function init() {
     loadGameData();
     newTilesBtn.disabled = true;
 
-    newTilesBtn.addEventListener('click', generateNewTiles);
-    newGameBtn.addEventListener('click', () => {
+    newTilesBtn.addEventListener("click", generateNewTiles);
+    newGameBtn.addEventListener("click", () => {
         newGame();
         countGames++;
         saveGameData();
         countGamesElem.innerHTML = countGames;
     });
 
-    //Tillämpa drag and drop funktion
-    newTiles.querySelectorAll('.tile').forEach(tile => {
-        tile.setAttribute('draggable', true); 
-        tile.addEventListener('dragstart', handleDragStart);
-        tile.addEventListener('dragend', handleDragEnd);
-    });
-
-    board.querySelectorAll('.tile').forEach(tile => {
-        tile.addEventListener('dragover', handleDragOver);
-        tile.addEventListener('dragleave', handleDragLeave);
-        tile.addEventListener('drop', handleDrop);
-    });
 
     // Läs in ev. sparad data
     function loadGameData() {
-        const savedData = localStorage.getItem('gameData');
+        const savedData = localStorage.getItem("gameData");
         if (savedData) {
             try {
                 const data = JSON.parse(savedData);
@@ -48,7 +36,7 @@ function init() {
                 totPointsElem.innerHTML = totalPoints;
                 countGamesElem.innerHTML = countGames;
             } catch (e) {
-                console.error('Failed to parse saved game data:', e);
+                console.error("Failed to parse saved game data:", e);
                 totalPoints = 0;
                 countGames = 0;
             }
@@ -58,10 +46,10 @@ function init() {
     // Rensa brädet, meddelanden och markörer
     function newGame() {
 
-        board.querySelectorAll('.tile').forEach(tile => tile.innerHTML = '');
-        board.querySelectorAll('.mark').forEach(mark => mark.classList.remove('check', 'cross'));
+        board.querySelectorAll(".tile").forEach(tile => tile.innerHTML = "");
+        board.querySelectorAll(".mark").forEach(mark => mark.classList.remove("check", "cross"));
 
-        message.innerHTML = '';
+        message.innerHTML = "";
         usedNumbers.clear();
         currentTiles = [];
 
@@ -69,9 +57,9 @@ function init() {
         newTilesBtn.disabled = false;
     }
 
-    //Funktion för skapande av 4 nya brickor
+    //Funktion för skapande av 4 nya brickor och drag and drop
     function generateNewTiles() {
-        newTiles.querySelectorAll('.tile').forEach(tile => tile.innerHTML = '');
+        newTiles.querySelectorAll(".tile").forEach(tile => tile.innerHTML = "");
         currentTiles = [];
 
         // Välj ut slumpmässiga brickor
@@ -83,12 +71,25 @@ function init() {
             }
         }
 
+        //Tillämpa drag and drop funktion
+        newTiles.querySelectorAll(".tile").forEach(tile => {
+            tile.setAttribute("draggable", true);
+            tile.addEventListener("dragstart", handleDragStart);
+            tile.addEventListener("dragend", handleDragEnd);
+        });
+
+        board.querySelectorAll(".tile").forEach(tile => {
+            tile.addEventListener("dragover", handleDragOver);
+            tile.addEventListener("dragleave", handleDragLeave);
+            tile.addEventListener("drop", handleDrop);
+        });
+
         // Gör de nya brickorna draggable
-        newTiles.querySelectorAll('.tile').forEach((tile, index) => {
+        newTiles.querySelectorAll(".tile").forEach((tile, index) => {
             tile.innerHTML = currentTiles[index];
-            tile.setAttribute('draggable', true);
-            tile.addEventListener('dragstart', handleDragStart);
-            tile.addEventListener('dragend', handleDragEnd);
+            tile.setAttribute("draggable", true);
+            tile.addEventListener("dragstart", handleDragStart);
+            tile.addEventListener("dragend", handleDragEnd);
         });
 
         // Inaktiv knapp så länge det finns brickor att placera
@@ -103,37 +104,40 @@ function init() {
         }
 
         // Data som ska överföras under drag and drop
-        e.dataTransfer.setData('text', e.target.innerHTML);
-        e.target.classList.add('dragging');
+        e.dataTransfer.setData("text", e.target.innerHTML);
+        e.target.classList.add("dragging");
     }
 
+    // Funktioner som implementerar bakgrundsfärg under dragOver 
     function handleDragOver(e) {
         e.preventDefault();
-        if (e.target.classList.contains('tile') && !e.target.innerHTML) {
-            e.target.classList.add('hiliteDropZone');
+        if (e.target.classList.contains("tile") && !e.target.innerHTML) {
+            e.target.classList.add("hiliteDropZone");
         }
     }
 
+    // Funktion som tar bort bakgrundsfärgen
     function handleDragLeave(e) {
-        if (e.target.classList.contains('tile')) {
-            e.target.classList.remove('hiliteDropZone');
+        if (e.target.classList.contains("tile")) {
+            e.target.classList.remove("hiliteDropZone");
         }
     }
 
+    // Funktion som överför data vid släppt brickca på tom ruta
     function handleDrop(e) {
         e.preventDefault();
-        const draggedNumber = e.dataTransfer.getData('text');
+        const draggedNumber = e.dataTransfer.getData("text");
         // Kontroll av tomma brickor på brädet
-        if (e.target.classList.contains('tile') && !e.target.innerHTML) {
+        if (e.target.classList.contains("tile") && !e.target.innerHTML) {
             e.target.innerHTML = draggedNumber;
-            e.target.classList.remove('hiliteDropZone');
-           
-            document.querySelector('.dragging').innerHTML = '';
-            document.querySelector('.dragging').classList.remove('dragging');
-          
+            e.target.classList.remove("hiliteDropZone");
 
-            if ([...newTiles.querySelectorAll('.tile')].every(tile => !tile.innerHTML)) {
-                if (![...board.querySelectorAll('.tile')].every(tile => tile.innerHTML)) {
+            document.querySelector(".dragging").innerHTML = "";
+            document.querySelector(".dragging").classList.remove("dragging");
+
+
+            if ([...newTiles.querySelectorAll(".tile")].every(tile => !tile.innerHTML)) {
+                if (![...board.querySelectorAll(".tile")].every(tile => tile.innerHTML)) {
                     newTilesBtn.disabled = false;
                 }
             }
@@ -143,12 +147,12 @@ function init() {
 
     // Ta bort dragging-class
     function handleDragEnd(e) {
-        e.target.classList.remove('dragging');
+        e.target.classList.remove("dragging");
     }
 
     // Funktion som konrollerar om brädet är fullt
     function checkGameCompletion() {
-        if ([...board.querySelectorAll('.tile')].every(tile => tile.innerHTML)) {
+        if ([...board.querySelectorAll(".tile")].every(tile => tile.innerHTML)) {
             checkSeries();
 
             // Om brädet är fullt inaktiveras knappen
@@ -167,10 +171,10 @@ function init() {
         for (let i = 1; i <= 4; i++) {
             const rowTiles = [...board.querySelectorAll(".s" + i + ".tile")];
             if (isIncreasing(rowTiles)) {
-                document.querySelector(".mark.s" + i).classList.add('check');
+                document.querySelector(".mark.s" + i).classList.add("check");
                 points++;
             } else {
-                document.querySelector(".mark.s" + i).classList.add('cross');
+                document.querySelector(".mark.s" + i).classList.add("cross");
             }
         }
 
@@ -178,10 +182,10 @@ function init() {
         for (let i = 5; i <= 8; i++) {
             const colTiles = [...board.querySelectorAll(".s" + i + ".tile")];
             if (isIncreasing(colTiles, true)) {
-                document.querySelector(".mark.s" + i).classList.add('check');
+                document.querySelector(".mark.s" + i).classList.add("check");
                 points++;
             } else {
-                document.querySelector(".mark.s" + i).classList.add('cross');
+                document.querySelector(".mark.s" + i).classList.add("cross");
             }
         }
 
@@ -210,7 +214,7 @@ function init() {
             totalPoints: totalPoints,
             countGames: countGames
         };
-        localStorage.setItem('gameData', JSON.stringify(data));
+        localStorage.setItem("gameData", JSON.stringify(data));
     }
 }
 
