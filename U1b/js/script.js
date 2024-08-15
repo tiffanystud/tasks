@@ -9,6 +9,7 @@ let hangmanImg;
 let hangmanNr;
 let msgElem;
 let startTime;
+let usedWord;
 
 // --------------------------------------------------
 // Initiering då webbsidan laddats in
@@ -52,7 +53,12 @@ function startGame() {
 // --------------------------------------------------
 // Ett ord väljs slumpmässigt. Visa en ruta för varje bokstav i ordet
 function selectRandomWord() {
+    usedWord = randomWord;
     randomWord = wordList[Math.floor(Math.random() * wordList.length)];
+
+    if (randomWord === usedWord) {
+        randomWord = wordList[Math.floor(Math.random() * wordList.length)];
+    }
 
     const letterBoxesContainer = document.getElementById("letterBoxes");
     letterBoxesContainer.innerHTML = ""; // Töm tidigare rutor
