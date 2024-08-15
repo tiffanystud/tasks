@@ -17,7 +17,7 @@ function init() {
     letterButtons = document.querySelectorAll("#letterButtons button");
     hangmanImg = document.querySelector("#hangman");
     msgElem = document.querySelector("#message");
-    
+
     startBtn.addEventListener("click", startGame);
     letterButtons.forEach(button => {
         button.addEventListener("click", guessLetter);
@@ -34,6 +34,8 @@ window.addEventListener("load", init);
 // Initiera ett nytt spel. Visa första bilden (h0.png),
 // sätt bildnummer till 0, inaktivera startknapp och aktivera bokstavsknappar.
 function startGame() {
+
+    startTime = new Date();
     hangmanImg.src = "img/h0.png";
     hangmanNr = 0;
 
@@ -73,7 +75,7 @@ function guessLetter(e) {
     const boxElems = document.querySelectorAll("#letterBoxes span");
 
     let correctGuess = false;
-    
+
     for (let i = 0; i < randomWord.length; i++) {
         if (randomWord[i] === selectedLetter) {
             boxElems[i].textContent = selectedLetter;
@@ -107,10 +109,14 @@ function guessLetter(e) {
 // Avsluta spelet genom att skriva ut ett meddelande och
 // sedan aktivera startknappen och inaktivera bokstavsknapparna
 function endGame(manHanged) {
+
+    let endTime = new Date();
+    let timeElapsed = (endTime - startTime) / 1000;
+
     if (manHanged) {
-        msgElem.textContent = "Gubben blev hängd! Ordet var: " + randomWord;
+        msgElem.textContent = "Gubben blev hängd! Ordet var: " + randomWord + ". Din speltid var: " + timeElapsed + " sekunder.";
     } else {
-        msgElem.textContent = "Grattis! Du gissade på " + randomWord + " som är rätt ord!";
+        msgElem.textContent = "Grattis! Du gissade på " + randomWord + " som är rätt ord!" + ". Din speltid var: " + timeElapsed + " sekunder.";
     }
 
     startBtn.disabled = false;
